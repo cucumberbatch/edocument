@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd">
+
+    <changeSet id="db-initialization" author="vshadrin">
+        <createTable tableName="document">
+            <column name="id" type="int8" autoIncrement="true">
+                <constraints primaryKey="true" 
+                             nullable="false"/>
+            </column>
+            <column name="status" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="uuid">
+                <constraints unique="true" 
+                             nullable="false"/>
+            </column>
+            <column name="name" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="document_history">
+            <column name="id" type="int8" autoIncrement="true">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="document_id" type="int8">
+                <constraints nullable="false"
+                             foreignKeyName="fk_document_history_document_id"
+                             referencedTableName="document"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="initiator" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action_kind" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" type="varchar(256)"/>
+        </createTable>
+
+        <createTable tableName="approval_registry">
+            <column name="id" type="int8" autoIncrement="true">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="document_id" type="int8">
+                <constraints nullable="false"
+                             foreignKeyName="fk_approval_registry_document_id"
+                             referencedTableName="document"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+</databaseChangeLog>
